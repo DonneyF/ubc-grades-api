@@ -1,0 +1,3 @@
+flask
+flask_RESTful
+flask_CORs
