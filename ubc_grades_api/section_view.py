@@ -3,7 +3,7 @@ from flask import jsonify
 import sqlite3
 from ubc_grades_api.api import app
 
-from helpers import section_dict_factory
+from helpers import section_dict_factory, arr_to_dict
 
 class Section(Resource):
     def get(self, yearsession, subject, course, section):
@@ -24,6 +24,7 @@ class Course(Resource):
         conn.row_factory = section_dict_factory
         cur = conn.cursor()
         results = cur.execute(query, [yearsession, subject, course]).fetchall()
+        results = arr_to_dict(results, 'id')
 
         return jsonify(results)
 
@@ -35,6 +36,7 @@ class Subject(Resource):
         conn.row_factory = section_dict_factory
         cur = conn.cursor()
         results = cur.execute(query, [yearsession, subject]).fetchall()
+        results = arr_to_dict(results, 'id')
 
         return jsonify(results)
 
@@ -46,5 +48,6 @@ class YearSession(Resource):
         conn.row_factory = section_dict_factory
         cur = conn.cursor()
         results = cur.execute(query, [yearsession]).fetchall()
+        results = arr_to_dict(results, 'id')
 
         return jsonify(results)
