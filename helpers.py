@@ -27,6 +27,3 @@ def dict_factory(cursor, row):
         if row[idx] is not None: d[col[0]] = row[idx]
         #d[col[0]] = row[idx]
     return d
-
-def arr_to_dict(arr, key):
-    return {ele.pop(key):ele for ele in arr}

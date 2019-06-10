@@ -3,9 +3,9 @@ from flask import request, jsonify
 import sqlite3
 from ubc_grades_api.api import app
 
-from helpers import dict_factory, arr_to_dict
+from helpers import dict_factory
 
-def general_get(db_table, subject, course, select_qty, key=None):
+def general_get(db_table, subject, course, select_qty):
     if course == None:
         query = f"SELECT * FROM {db_table} WHERE subject = ?;"
         to_filter = [subject]
@@ -18,7 +18,6 @@ def general_get(db_table, subject, course, select_qty, key=None):
     cur = conn.cursor()
     if select_qty == 'many':
         results = cur.execute(query, to_filter).fetchall()
-        results = arr_to_dict(results, key)
     else:
         results = cur.execute(query, to_filter).fetchone()
 
@@ -30,7 +29,7 @@ class AverageHistory(Resource):
 
 class DistributionHistory(Resource):
     def get(self, subject, course=None):
-        return general_get("cp_dists", subject, course, 'many', 'yearsession')
+        return general_get("cp_dists", subject, course, 'many')
 
 class OfferHistory(Resource):
     def get(self, subject, course=None):
@@ -52,7 +51,6 @@ class InstructorHistory(Resource):
 
         cur = conn.cursor()
         results = cur.execute(query, to_filter).fetchall()
-        results = arr_to_dict(results, 'instructor')
         return results
 
 class General(Resource):
