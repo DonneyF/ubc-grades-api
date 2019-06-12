@@ -5,6 +5,8 @@ from flask_cors import CORS
 app = flask.Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 app.config["DEBUG"] = True
+app.config['JSON_SORT_KEYS'] = False
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 api = Api(app)
 
 # Add API resources
