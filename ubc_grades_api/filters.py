@@ -3,7 +3,7 @@ from flask import jsonify
 import sqlite3
 from ubc_grades_api.api import app
 
-from helpers import yearsessions, basic_element_factory
+from helpers import yearsessions, basic_element_factory, subjects
 
 class Sections(Resource):
     def get(self, yearsession, subject, course):
@@ -29,7 +29,7 @@ class Courses(Resource):
 
 class CoursesNoYearsession(Resource):
     def get(self, subject):
-        query = "SELECT DISTINCT course FROM grades WHERE  subject = ?;"
+        query = "SELECT DISTINCT course FROM grades WHERE subject = ?;"
 
         conn = sqlite3.connect(app.config['DATABASE_NAME'])
         conn.row_factory = basic_element_factory
@@ -41,16 +41,14 @@ class CoursesNoYearsession(Resource):
 class Subjects(Resource):
     def get(self, yearsession=None):
         if yearsession == None:
-            query = "SELECT DISTINCT subject FROM grades;"
-            to_filter = []
-        else:
-            query = "SELECT DISTINCT subject FROM grades WHERE yearsession = ?;"
-            to_filter = [yearsession]
+            return jsonify(subjects)
+
+        query = "SELECT DISTINCT subject FROM grades WHERE yearsession = ?;"
 
         conn = sqlite3.connect(app.config['DATABASE_NAME'])
         conn.row_factory = basic_element_factory
         cur = conn.cursor()
-        results = cur.execute(query, to_filter).fetchall()
+        results = cur.execute(query, [yearsession]).fetchall()
 
         return jsonify(results)
 

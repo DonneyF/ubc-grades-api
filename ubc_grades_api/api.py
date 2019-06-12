@@ -1,6 +1,7 @@
 import flask
 from flask_restful import Api
 from flask_cors import CORS
+import os
 
 app = flask.Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -36,8 +37,8 @@ api.add_resource(cp.OfferHistory, '/api/course-profile/offerings/<string:subject
 
 @app.route('/', methods=['GET'])
 def home():
-    return '''<h1>Distant Reading Archive</h1>
-<p>A prototype API for distant reading of science fiction novels.</p>'''
+    # return flask.Response(open("PATH").read())
+    return "<h1> API Homepage </h1>"
 
 @app.errorhandler(404)
 def error_handler(e):
