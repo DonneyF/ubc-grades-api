@@ -2,4 +2,4 @@ venv/
 .cache/
 .idea/
 __pycache__/
-database.db
+database_v1.db
