@@ -26,26 +26,26 @@ def general_get(db_table, subject, course, select_qty):
 
 class AverageHistory(Resource):
     def get(self, subject, course=None):
-        return general_get("cp_avg_hist", subject, course, 'one')
+        return general_get("cp_averages", subject, course, 'one')
 
 
 class DistributionHistory(Resource):
     def get(self, subject, course=None):
-        return general_get("cp_dists", subject, course, 'many')
+        return general_get("cp_distributions", subject, course, 'many')
 
 
 class OfferHistory(Resource):
     def get(self, subject, course=None):
-        return general_get("cp_offer_hist", subject, course, 'one')
+        return general_get("cp_offerings", subject, course, 'one')
 
 
 class InstructorHistory(Resource):
     def get(self, subject, course=None):
         if course == None:
             to_filter = [subject]
-            query = "SELECT * FROM cp_instr_hist_by_subject WHERE subject = ?;"
+            query = "SELECT * FROM cp_instructors_by_subject WHERE subject = ?;"
         else:
-            query = "SELECT * FROM cp_instr_hist WHERE subject = ? AND course = ?;"
+            query = "SELECT * FROM cp_instructors WHERE subject = ? AND course = ?;"
             to_filter = [subject, course]
 
         conn = sqlite3.connect(database)
